@@ -430,12 +430,10 @@ export default function GridPlacementSystem({
         className="absolute inset-0"
         style={{
           backgroundImage: imageLoaded ? `url('${backgroundImage}')` : "none",
-          backgroundSize: "contain",
+          backgroundSize: "cover",
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
           backgroundColor: "#74C480", // Fallback color
-          width: mapDimensions.width,
-          height: mapDimensions.height,
           margin: "0 auto", // Center horizontally
         }}
       >
