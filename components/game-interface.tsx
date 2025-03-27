@@ -17,6 +17,7 @@ import ResourcePanel from "./resource-panel"
 import Image from "next/image"
 import SaveIndicator from "./save-indicator"
 import OfflineProgressModal from "./offline-progress-modal"
+import Link from "next/link"
 
 export default function GameInterface({ onDisconnect }) {
   const [activeView, setActiveView] = useState("den") // "world" or "den"
@@ -186,6 +187,28 @@ export default function GameInterface({ onDisconnect }) {
               >
                 <Settings size={18} />
               </Button>
+
+              {/* Lore Page Link */}
+              <Link href="/lore" className="ml-2">
+                <Button
+                  variant="outline"
+                  className="bg-[#FFF6E9] text-[#734739] border-2 border-[#734739] hover:bg-[#FFC078]/20"
+                  size="sm"
+                >
+                  📚 Lore
+                </Button>
+              </Link>
+
+              {/* How To Play Link */}
+              <Link href="/how-to-play" className="ml-2">
+                <Button
+                  variant="outline"
+                  className="bg-[#FFF6E9] text-[#734739] border-2 border-[#734739] hover:bg-[#FFC078]/20"
+                  size="sm"
+                >
+                  ❓ How To Play
+                </Button>
+              </Link>
             </div>
           </div>
 
@@ -251,4 +274,3 @@ export default function GameInterface({ onDisconnect }) {
     </div>
   )
 }
-
