@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { useGameState } from "@/context/game-context"
 import QuestPanel from "@/components/quest-panel"
@@ -255,6 +256,15 @@ export default function GameInterface({ onDisconnect }) {
               >
                 🐻 Community
               </Button>
+              <Link href="/mini-games" className="ml-2">
+    <Button
+    variant="outline"
+                className="bg-[#FFF6E9] text-[#734739] border-2 border-[#734739] hover:bg-[#6FB5FF]/20"
+                size="sm"
+              >
+                🎮 Mini Games
+              </Button>
+            </Link>
             </div>
           </div>
         </div>
