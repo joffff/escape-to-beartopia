@@ -39,8 +39,8 @@ export default function MiniGamesPage() {
                 <TabsTrigger value="match" className="data-[state=active]:bg-[#74C480] data-[state=active]:text-white">
                   Match Game
                 </TabsTrigger>
-                <TabsTrigger value="coming-soon" className="data-[state=active]:bg-[#74C480] data-[state=active]:text-white">
-                  Coming Soon
+                <TabsTrigger value="repeat" className="data-[state=active]:bg-[#74C480] data-[state=active]:text-white">
+                  Repeat
                 </TabsTrigger>
                 <TabsTrigger value="coming-soon2" className="data-[state=active]:bg-[#74C480] data-[state=active]:text-white">
                   Coming Soon
@@ -53,47 +53,48 @@ export default function MiniGamesPage() {
 
             <div className="p-6">
               <ScrollArea className="h-[60vh]">
-                <TabsContent value="match" className="space-y-6">
-                  <div className="flex flex-col md:flex-row gap-6 items-center">
-                    <div className="md:w-1/3 flex justify-center">
-                      <div className="relative w-64 h-64 rounded-lg overflow-hidden border-4 border-[#FFC078]">
-                        <Image
-                          src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/BearishLogo-Byu3rXUZxziBlHv1DUdkCofs2emyI4.webp"
-                          alt="Match Game"
-                          fill
-                          style={{ objectFit: "contain" }}
-                        />
-                      </div>
-                    </div>
-                    <div className="md:w-2/3">
-                      <h2 className="text-3xl font-bold mb-4 text-[#734739]">Match Game</h2>
-                      <p className="mb-4 text-lg">
-                        Test your memory and earn rewards by matching pairs of cards. Each match you make will earn you honey and other resources.
-                      </p>
-                      <p className="text-lg">
-                        The game features different difficulty levels and seasonal bonuses. Complete challenges to earn special rewards!
-                      </p>
-                    </div>
-                  </div>
+              <TabsContent value="repeat" className="space-y-6">
+  <div className="flex flex-col md:flex-row gap-6 items-center">
+    <div className="md:w-1/3 flex justify-center">
+      <div className="relative w-64 h-64 rounded-lg overflow-hidden border-4 border-[#FFC078]">
+        <Image
+          src="/images/mini-games/repeat/thumbnail.png"
+          alt="Pattern Repeat"
+          fill
+          style={{ objectFit: "contain" }}
+        />
+      </div>
+    </div>
+    <div className="md:w-2/3">
+      <h2 className="text-3xl font-bold mb-4 text-[#734739]">Repeat</h2>
+      <p className="mb-4 text-lg">
+        Challenge your memory by repeating increasingly complex sequences of bear images.
+      </p>
+      <p className="text-lg">
+        Like Simon Says, master each round to earn rewards and prove your skill.
+      </p>
+    </div>
+  </div>
 
-                  <div className="mt-8">
-                    <Link href="/mini-games/match" className="flex items-center justify-center">
-                      <Button className="w-full bg-[#74C480] hover:bg-[#6FB5FF] text-white font-bold py-3 px-6 rounded-full transition-colors border-2 border-white">
-                        Play Match Game
-                      </Button>
-                    </Link>
-                  </div>
-                </TabsContent>
+  <div className="mt-8">
+    <Link href="/mini-games/repeat" className="flex items-center justify-center">
+      <Button className="w-full bg-[#74C480] hover:bg-[#6FB5FF] text-white font-bold py-3 px-6 rounded-full transition-colors border-2 border-white">
+        Play Repeat
+      </Button>
+    </Link>
+  </div>
+</TabsContent>
 
-                {/* Coming Soon Tabs */}
-                <TabsContent value="coming-soon" className="space-y-6">
+                <TabsContent value="repeat" className="space-y-6">
                   <div className="text-center">
-                    <h2 className="text-3xl font-bold mb-4 text-[#734739]">Coming Soon</h2>
+                    <h2 className="text-3xl font-bold mb-4 text-[#734739]">Repeat</h2>
                     <p className="text-lg">
-                      New mini-games are being developed to enhance your Beartopia experience. Check back soon for updates!
+                      Test your memory and earn rewards by repeating a sequence of bears. Each correct sequence will earn you honey and other resources.
                     </p>
                   </div>
                 </TabsContent>
+                {/* Coming Soon Tabs */}
+                
                 <TabsContent value="coming-soon2" className="space-y-6">
                   <div className="text-center">
                     <h2 className="text-3xl font-bold mb-4 text-[#734739]">Coming Soon</h2>
