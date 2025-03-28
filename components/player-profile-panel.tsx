@@ -127,7 +127,7 @@ export default function PlayerProfilePanel() {
         <div className="flex items-center space-x-4">
           <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-[#734739]">
             <Image
-              src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/BearishLogo-Byu3rXUZxziBlHv1DUdkCofs2emyI4.webp"
+              src="/images/BearishLogo.webp"
               alt="Player Avatar"
               width={64}
               height={64}
@@ -188,7 +188,7 @@ export default function PlayerProfilePanel() {
             <div className="flex justify-center mb-4">
               <div className="w-32 h-32 bg-[#FFC078]/50 rounded-lg flex items-center justify-center border-2 border-[#734739]">
                 <Image
-                  src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/BearishLogo-Byu3rXUZxziBlHv1DUdkCofs2emyI4.webp"
+                  src="/images/BearishLogo.webp"
                   alt="Player Avatar"
                   width={100}
                   height={100}
@@ -296,4 +296,3 @@ export default function PlayerProfilePanel() {
     </div>
   )
 }
-

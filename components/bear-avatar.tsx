@@ -42,7 +42,7 @@ export default function BearAvatar({ compact = false }: BearAvatarProps) {
       >
         <div className="relative w-16 h-16 rounded-full bg-[#FFC078]/70 p-2 overflow-hidden flex items-center justify-center border-2 border-[#FFC078]">
           <Image
-            src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/BearishLogo-Byu3rXUZxziBlHv1DUdkCofs2emyI4.webp"
+            src="/images/BearishLogo.webp"
             alt="Bearish Avatar"
             width={40}
             height={40}
@@ -79,7 +79,7 @@ export default function BearAvatar({ compact = false }: BearAvatarProps) {
         >
           <div className="relative w-48 h-48 rounded-full bg-[#FFC078]/30 p-4 overflow-hidden flex items-center justify-center border-2 border-[#FFC078]">
             <Image
-              src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/BearishLogo-Byu3rXUZxziBlHv1DUdkCofs2emyI4.webp"
+              src="/images/BearishLogo.webp"
               alt="Bearish Avatar"
               width={120}
               height={120}
@@ -116,4 +116,3 @@ export default function BearAvatar({ compact = false }: BearAvatarProps) {
     </div>
   )
 }
-

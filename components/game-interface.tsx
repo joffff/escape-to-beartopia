@@ -170,7 +170,7 @@ export default function GameInterface({ onDisconnect }) {
               >
                 <div className="w-8 h-8 rounded-full overflow-hidden bg-[#FFC078] flex items-center justify-center">
                   <Image
-                    src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/BearishLogo-Byu3rXUZxziBlHv1DUdkCofs2emyI4.webp"
+                    src="/images/BearishLogo.webp"
                     alt="Bearish Logo"
                     width={24}
                     height={24}
@@ -256,14 +256,14 @@ export default function GameInterface({ onDisconnect }) {
                 🐻 Community
               </Button>
               <Link href="/mini-games" className="ml-2">
-    <Button
-    variant="outline"
-                className="bg-[#FFF6E9] text-[#734739] border-2 border-[#734739] hover:bg-[#6FB5FF]/20"
-                size="sm"
-              >
-                🎮 Mini Games
-              </Button>
-            </Link>
+                <Button
+                  variant="outline"
+                  className="bg-[#FFF6E9] text-[#734739] border-2 border-[#734739] hover:bg-[#6FB5FF]/20"
+                  size="sm"
+                >
+                  🎮 Mini Games
+                </Button>
+              </Link>
             </div>
           </div>
         </div>

@@ -22,7 +22,7 @@ export default function CommunityPanel() {
             <div className="space-y-4">
               <div className="flex items-center mb-4">
                 <Image
-                  src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/BearishLogo-Byu3rXUZxziBlHv1DUdkCofs2emyI4.webp"
+                  src="/images/BearishLogo.webp"
                   alt="Bearish Logo"
                   width={40}
                   height={40}
@@ -142,4 +142,3 @@ export default function CommunityPanel() {
     </div>
   )
 }
-

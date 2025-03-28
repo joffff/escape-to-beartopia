@@ -47,7 +47,7 @@ export default function Home() {
         <div className="text-center">
           <div className="w-24 h-24 mx-auto mb-4 animate-bounce">
             <img
-              src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/BearishLogo-Byu3rXUZxziBlHv1DUdkCofs2emyI4.webp"
+              src="/images/BearishLogo.webp"
               alt="Loading"
               className="w-full h-full"
             />
@@ -77,4 +77,3 @@ export default function Home() {
     </AbstractWalletProvider>
   )
 }
-

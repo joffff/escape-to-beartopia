@@ -82,7 +82,7 @@ export default function LandingScreen({ onConnect }: LandingScreenProps) {
 
         <div className="flex justify-center mb-8">
           <Image
-            src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/BearishLogo-Byu3rXUZxziBlHv1DUdkCofs2emyI4.webp"
+            src="/images/BearishLogo.webp"
             alt="Bearish Logo"
             width={120}
             height={120}
@@ -136,4 +136,3 @@ export default function LandingScreen({ onConnect }: LandingScreenProps) {
     </div>
   )
 }
-
