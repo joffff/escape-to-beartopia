@@ -36,16 +36,16 @@ export default function MiniGamesPage() {
           <Tabs defaultValue="match" value={activeTab} onValueChange={setActiveTab} className="w-full">
             <div className="bg-[#FFC078]/30 p-4">
               <TabsList className="grid grid-cols-4 bg-[#FFF6E9]">
-                <TabsTrigger value="match" className="data-[state=active]:bg-[#74C480] data-[state=active]:text-white">
-                  Match Game
+                <TabsTrigger value="match" className="data-[state=active]:bg-[#64B470] data-[state=active]:text-white text-[#5A4A3C] font-bold">
+                  Match
                 </TabsTrigger>
-                <TabsTrigger value="repeat" className="data-[state=active]:bg-[#74C480] data-[state=active]:text-white">
+                <TabsTrigger value="repeat" className="data-[state=active]:bg-[#64B470] data-[state=active]:text-white text-[#5A4A3C] font-bold">
                   Repeat
                 </TabsTrigger>
-                <TabsTrigger value="coming-soon2" className="data-[state=active]:bg-[#74C480] data-[state=active]:text-white">
+                <TabsTrigger value="coming-soon2" className="data-[state=active]:bg-[#64B470] data-[state=active]:text-white text-[#5A4A3C] font-bold">
                   Coming Soon
                 </TabsTrigger>
-                <TabsTrigger value="coming-soon3" className="data-[state=active]:bg-[#74C480] data-[state=active]:text-white">
+                <TabsTrigger value="coming-soon3" className="data-[state=active]:bg-[#64B470] data-[state=active]:text-white text-[#5A4A3C] font-bold">
                   Coming Soon
                 </TabsTrigger>
               </TabsList>
@@ -54,36 +54,36 @@ export default function MiniGamesPage() {
             <div className="p-6">
               <ScrollArea className="h-[60vh]">
               <TabsContent value="repeat" className="space-y-6">
-  <div className="flex flex-col md:flex-row gap-6 items-center">
-    <div className="md:w-1/3 flex justify-center">
-      <div className="relative w-64 h-64 rounded-lg overflow-hidden border-4 border-[#FFC078]">
-        <Image
-          src="/images/mini-games/repeat/thumbnail.png"
-          alt="Pattern Repeat"
-          fill
-          style={{ objectFit: "contain" }}
-        />
-      </div>
-    </div>
-    <div className="md:w-2/3">
-      <h2 className="text-3xl font-bold mb-4 text-[#734739]">Repeat</h2>
-      <p className="mb-4 text-lg">
-        Challenge your memory by repeating increasingly complex sequences of bear images.
-      </p>
-      <p className="text-lg">
-        Like Simon Says, master each round to earn rewards and prove your skill.
-      </p>
-    </div>
-  </div>
+                  <div className="flex flex-col md:flex-row gap-6 items-center">
+                    <div className="md:w-1/3 flex justify-center">
+                      <div className="relative w-64 h-64 rounded-lg overflow-hidden border-4 border-[#FFC078]">
+                        <Image
+                          src="/images/mini-games/repeat/thumbnail.png"
+                          alt="Pattern Repeat"
+                          fill
+                          style={{ objectFit: "contain" }}
+                        />
+                      </div>
+                    </div>
+                    <div className="md:w-2/3">
+                      <h2 className="text-3xl font-bold mb-4 text-[#734739]">Repeat</h2>
+                      <p className="mb-4 text-lg">
+                        Challenge your memory by repeating increasingly complex sequences of bear images.
+                      </p>
+                      <p className="text-lg">
+                        Like Simon Says, master each round to earn rewards and prove your skill.
+                      </p>
+                    </div>
+                  </div>
 
-  <div className="mt-8">
-    <Link href="/mini-games/repeat" className="flex items-center justify-center">
-      <Button className="w-full bg-[#74C480] hover:bg-[#6FB5FF] text-white font-bold py-3 px-6 rounded-full transition-colors border-2 border-white">
-        Play Repeat
-      </Button>
-    </Link>
-  </div>
-</TabsContent>
+                  <div className="mt-8">
+                    <Link href="/mini-games/repeat" className="flex items-center justify-center">
+                      <Button className="w-full bg-[#74C480] hover:bg-[#6FB5FF] text-white font-bold py-3 px-6 rounded-full transition-colors border-2 border-white">
+                        Play Repeat
+                      </Button>
+                    </Link>
+                  </div>
+                </TabsContent>
 
                 <TabsContent value="repeat" className="space-y-6">
                   <div className="text-center">
