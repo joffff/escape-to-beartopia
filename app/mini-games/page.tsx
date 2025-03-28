@@ -53,6 +53,38 @@ export default function MiniGamesPage() {
 
             <div className="p-6">
               <ScrollArea className="h-[60vh]">
+              <TabsContent value="match" className="space-y-6">
+                  <div className="flex flex-col md:flex-row gap-6 items-center">
+                    <div className="md:w-1/3 flex justify-center">
+                      <div className="relative w-64 h-64 rounded-lg overflow-hidden border-4 border-[#FFC078]">
+                        <Image
+                          src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/BearishLogo-Byu3rXUZxziBlHv1DUdkCofs2emyI4.webp"
+                          alt="Match Game"
+                          fill
+                          style={{ objectFit: "contain" }}
+                        />
+                      </div>
+                    </div>
+                    <div className="md:w-2/3">
+                      <h2 className="text-3xl font-bold mb-4 text-[#734739]">Match Game</h2>
+                      <p className="mb-4 text-lg">
+                        Test your memory and earn rewards by matching pairs of cards. Each match you make will earn you honey and other resources.
+                      </p>
+                      <p className="text-lg">
+                        The game features different difficulty levels and seasonal bonuses. Complete challenges to earn special rewards!
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="mt-8">
+                    <Link href="/mini-games/match" className="flex items-center justify-center">
+                      <Button className="w-full bg-[#74C480] hover:bg-[#6FB5FF] text-white font-bold py-3 px-6 rounded-full transition-colors border-2 border-white">
+                        Play Match Game
+                      </Button>
+                    </Link>
+                  </div>
+                </TabsContent>
+
               <TabsContent value="repeat" className="space-y-6">
                   <div className="flex flex-col md:flex-row gap-6 items-center">
                     <div className="md:w-1/3 flex justify-center">
