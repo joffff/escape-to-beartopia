@@ -18,7 +18,6 @@ import ResourcePanel from "./resource-panel"
 import Image from "next/image"
 import SaveIndicator from "./save-indicator"
 import OfflineProgressModal from "./offline-progress-modal"
-import Link from "next/link"
 
 export default function GameInterface({ onDisconnect }) {
   const [activeView, setActiveView] = useState("den") // "world" or "den"
