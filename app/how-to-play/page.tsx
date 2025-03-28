@@ -16,7 +16,7 @@ export default function HowToPlayPage() {
       <header className="bg-[#74C480] p-4 flex justify-between items-center">
         <div className="flex items-center gap-3">
           <Image
-            src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/BearishLogo-Byu3rXUZxziBlHv1DUdkCofs2emyI4.webp"
+            src="/images/BearishLogo.webp"
             alt="Bearish Logo"
             width={50}
             height={50}
@@ -59,7 +59,7 @@ export default function HowToPlayPage() {
                     <div className="md:w-1/3 flex justify-center">
                       <div className="relative w-64 h-64 rounded-lg overflow-hidden border-4 border-[#FFC078]">
                         <Image
-                          src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/BearishLogo-Byu3rXUZxziBlHv1DUdkCofs2emyI4.webp"
+                          src="/images/BearishLogo.webp"
                           alt="Game Basics"
                           fill
                           style={{ objectFit: "contain" }}
@@ -410,7 +410,7 @@ export default function HowToPlayPage() {
 
       {/* Footer */}
       <footer className="bg-[#74C480] text-white p-4 text-center">
-        <p>© 2025 Bearish - Escape to Beartopia</p>
+        <p>&copy; 2025 Bearish - Escape to Beartopia</p>
       </footer>
     </div>
   )

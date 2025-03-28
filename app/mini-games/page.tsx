@@ -16,7 +16,7 @@ export default function MiniGamesPage() {
       <header className="bg-[#74C480] p-4 flex justify-between items-center">
         <div className="flex items-center gap-3">
           <Image
-            src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/BearishLogo-Byu3rXUZxziBlHv1DUdkCofs2emyI4.webp"
+            src="/images/BearishLogo.webp"
             alt="Bearish Logo"
             width={50}
             height={50}
