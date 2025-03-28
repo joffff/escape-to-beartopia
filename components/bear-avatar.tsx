@@ -101,7 +101,7 @@ export default function BearAvatar({ compact = false }: BearAvatarProps) {
             onClick={handleClick}
             className="bg-[#E36F6F] hover:bg-[#FF82AD] text-white font-bold py-2 px-4 rounded-full transition-colors border-2 border-white"
           >
-            Tap the Hive (+{honeyClickValue.toFixed(1)})
+            Tap the Hive +{(honeyClickValue || 0).toFixed(1)}
           </Button>
         </div>
 
