@@ -142,6 +142,27 @@ interface GameState {
   lastSaved: number
 }
 
+// Add this function to verify saved data integrity
+const verifySavedData = (savedData: string): boolean => {
+  try {
+    const parsedData = JSON.parse(savedData)
+
+    // Check for required properties
+    const requiredProps = ["resources", "buildings", "upgrades", "skills", "quests", "playerStats"]
+    for (const prop of requiredProps) {
+      if (!parsedData[prop]) {
+        console.error(`Saved data missing required property: ${prop}`)
+        return false
+      }
+    }
+
+    return true
+  } catch (error) {
+    console.error("Error verifying saved data:", error)
+    return false
+  }
+}
+
 // Add lastSaved to the GameContextType interface
 interface GameContextType {
   resources: Resources
@@ -178,12 +199,13 @@ interface GameContextType {
     seeds: number
     scrolls: number
   }
-  saveGame: () => void
+  saveGame: () => boolean
   resetGame: () => void
   setCurrentRegion: (regionId: string) => void
   lastSaved: number
   offlineProgress: { timeAway: number; gains: Partial<Resources> } | null
   dismissOfflineProgress: () => void
+  debugSaveSystem: () => any
 }
 
 const GameContext = createContext<GameContextType | undefined>(undefined)
@@ -615,8 +637,10 @@ export function GameProvider({ children }: { children: ReactNode }) {
         ...prev,
         lastSaved: Date.now(),
       }))
+      return true
     } catch (error) {
       console.error("Failed to save game state:", error)
+      return false
     }
   }
 
@@ -718,6 +742,39 @@ export function GameProvider({ children }: { children: ReactNode }) {
   // Add a function to dismiss the offline progress modal
   const dismissOfflineProgress = () => {
     setOfflineProgress(null)
+  }
+
+  // Add the debugSaveSystem function
+  const debugSaveSystem = () => {
+    try {
+      // Check if localStorage is available
+      const testKey = "beartopia-storage-test"
+      localStorage.setItem(testKey, "test")
+      if (localStorage.getItem(testKey) !== "test") {
+        return { success: false, error: "localStorage not working properly" }
+      }
+      localStorage.removeItem(testKey)
+
+      // Check current saved data
+      const currentSave = localStorage.getItem("beartopia-game-state")
+      const hasSavedData = !!currentSave
+
+      // Try to save current state
+      const saveSuccess = saveGame()
+
+      return {
+        success: saveSuccess,
+        hasSavedData,
+        storageAvailable: true,
+        savedDataSize: currentSave ? currentSave.length : 0,
+        browserStorage: {
+          storageAvailable: !!navigator.storage,
+          remaining: "unknown" // Would require storage API permission to get
+        }
+      }
+    } catch (error) {
+      return { success: false, error: String(error) }
+    }
   }
 
   // Calculate berry click value based on skills and upgrades
@@ -1400,6 +1457,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
         lastSaved: gameState.lastSaved,
         offlineProgress,
         dismissOfflineProgress,
+        debugSaveSystem,
       }}
     >
       {children}
@@ -1414,4 +1472,3 @@ export function useGameState() {
   }
   return context
 }
-

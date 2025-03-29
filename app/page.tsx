@@ -3,9 +3,13 @@
 import { useState, useEffect } from "react"
 import { AbstractWalletProvider } from "@abstract-foundation/agw-react"
 import { abstractTestnet } from "viem/chains"
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import GameDashboard from "@/components/game-dashboard"
 import LandingScreen from "@/components/landing-screen"
 import { GameProvider } from "@/context/game-context"
+
+// Create a QueryClient instance outside of the component
+const queryClient = new QueryClient()
 
 export default function Home() {
   const [isConnected, setIsConnected] = useState(false)
@@ -43,37 +47,41 @@ export default function Home() {
   // Show loading state
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[#FFF6E9]">
-        <div className="text-center">
-          <div className="w-24 h-24 mx-auto mb-4 animate-bounce">
-            <img
-              src="/images/BearishLogo.webp"
-              alt="Loading"
-              className="w-full h-full"
-            />
+      <QueryClientProvider client={queryClient}>
+        <div className="min-h-screen flex items-center justify-center bg-[#FFF6E9]">
+          <div className="text-center">
+            <div className="w-24 h-24 mx-auto mb-4 animate-bounce">
+              <img
+                src="/images/BearishLogo.webp"
+                alt="Loading"
+                className="w-full h-full"
+              />
+            </div>
+            <p className="text-[#734739] text-xl font-bold">Loading Beartopia...</p>
           </div>
-          <p className="text-[#734739] text-xl font-bold">Loading Beartopia...</p>
         </div>
-      </div>
+      </QueryClientProvider>
     )
   }
 
   return (
-    <AbstractWalletProvider chain={abstractTestnet}>
-      <GameProvider>
-        <main className="min-h-screen">
-          {!isConnected ? (
-            <LandingScreen onConnect={handleConnect} />
-          ) : (
-            <GameDashboard
-              onDisconnect={() => {
-                localStorage.removeItem("beartopia-connected")
-                setIsConnected(false)
-              }}
-            />
-          )}
-        </main>
-      </GameProvider>
-    </AbstractWalletProvider>
+    <QueryClientProvider client={queryClient}>
+      <AbstractWalletProvider chain={abstractTestnet}>
+        <GameProvider>
+          <main className="min-h-screen">
+            {!isConnected ? (
+              <LandingScreen onConnect={handleConnect} />
+            ) : (
+              <GameDashboard
+                onDisconnect={() => {
+                  localStorage.removeItem("beartopia-connected")
+                  setIsConnected(false)
+                }}
+              />
+            )}
+          </main>
+        </GameProvider>
+      </AbstractWalletProvider>
+    </QueryClientProvider>
   )
 }

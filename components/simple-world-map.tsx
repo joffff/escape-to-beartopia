@@ -199,17 +199,17 @@ export default function SimpleWorldMap() {
         }}
         onClick={handleMapClick}
       >
-        {/* Map content - height now dynamically set based on image dimensions */}
-        <div className="relative w-full flex justify-center" style={{ height: mapHeight }}>
+        {/* Map content - full height and width */}
+        <div className="relative w-full h-full flex justify-center">
           {/* Background image container with proper sizing */}
           <div
             className="h-full w-full"
             style={{
-              maxWidth: "1000px", // Limit width to ensure it fits
+              width: "100%",
               ...(imageAvailable
                 ? {
                     backgroundImage: "url('/images/bearish-world-map.jpg')",
-                    backgroundSize: "contain",
+                    backgroundSize: "cover",
                     backgroundPosition: "center",
                     backgroundRepeat: "no-repeat",
                   }
@@ -499,4 +499,3 @@ export default function SimpleWorldMap() {
     </div>
   )
 }
-

@@ -58,10 +58,10 @@ export default function LorePage() {
                     <div className="md:w-1/3 flex justify-center">
                       <div className="relative w-64 h-64 rounded-lg overflow-hidden border-4 border-[#FFC078]">
                         <Image
-                          src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/BEARISH3D_1-bpKe2vDKcEp9KTZgHCvMHLfTPNgOxY.png"
+                          src="/images/BearishLogo.webp"
                           alt="Ancient Bears"
                           fill
-                          style={{ objectFit: "cover" }}
+                          style={{ objectFit: "contain" }}
                         />
                       </div>
                     </div>
@@ -278,10 +278,10 @@ export default function LorePage() {
                     <div className="md:w-1/3 flex justify-center">
                       <div className="relative w-64 h-64 rounded-lg overflow-hidden border-4 border-[#FFC078]">
                         <Image
-                          src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/BEARISH3D_1-bpKe2vDKcEp9KTZgHCvMHLfTPNgOxY.png"
+                          src="/images/BearishLogo.webp"
                           alt="Prophecy Crystal"
                           fill
-                          style={{ objectFit: "cover" }}
+                          style={{ objectFit: "contain" }}
                         />
                       </div>
                     </div>

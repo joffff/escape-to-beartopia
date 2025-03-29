@@ -65,7 +65,15 @@
     "thirdweb": "latest",
     "viem": "latest",
     "wagmi": "latest",
-    "@abstract-foundation/agw-react": "latest"
+    "@abstract-foundation/agw-react": "latest",
+    "expo": "latest",
+    "expo-asset": "latest",
+    "expo-file-system": "latest",
+    "expo-gl": "latest",
+    "react-native": "latest",
+    "three": "latest",
+    "@react-three/fiber": "latest",
+    "@react-three/drei": "latest"
   },
   "devDependencies": {
     "@types/node": "^22",
