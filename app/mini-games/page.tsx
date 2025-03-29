@@ -48,9 +48,7 @@ export default function MiniGamesPage() {
                 <TabsTrigger value="honey-heist" className="data-[state=active]:bg-[#64B470] data-[state=active]:text-white text-[#5A4A3C] font-bold">
                   Honey Heist
                 </TabsTrigger>
-                <TabsTrigger value="coming-soon2" className="data-[state=active]:bg-[#64B470] data-[state=active]:text-white text-[#5A4A3C] font-bold">
-                  Coming Soon
-                </TabsTrigger>
+
 
               </TabsList>
             </div>
@@ -121,14 +119,7 @@ export default function MiniGamesPage() {
                   </div>
                 </TabsContent>
 
-                <TabsContent value="repeat" className="space-y-6">
-                  <div className="text-center">
-                    <h2 className="text-3xl font-bold mb-4 text-[#734739]">Repeat</h2>
-                    <p className="text-lg">
-                      Test your memory and earn rewards by repeating a sequence of bears. Each correct sequence will earn you honey and other resources.
-                    </p>
-                  </div>
-                </TabsContent>
+                
 
                 <TabsContent value="berry-forest" className="space-y-6">
                   <div className="flex flex-col md:flex-row gap-6 items-center">
@@ -196,14 +187,6 @@ export default function MiniGamesPage() {
                   </div>
                 </TabsContent>
 
-                <TabsContent value="coming-soon2" className="space-y-6">
-                  <div className="text-center">
-                    <h2 className="text-3xl font-bold mb-4 text-[#734739]">Coming Soon</h2>
-                    <p className="text-lg">
-                      New mini-games are being developed to enhance your Beartopia experience. Check back soon for updates!
-                    </p>
-                  </div>
-                </TabsContent>
 
               </ScrollArea>
             </div>
