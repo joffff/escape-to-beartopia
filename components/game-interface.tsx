@@ -276,6 +276,25 @@ export default function GameInterface({ onDisconnect }) {
 
               {/* Navigation links and avatar on the right */}
               <div className="flex items-center gap-3">
+                
+                <Button
+                  onClick={() => setContent("profile")}
+                  className="bg-[#FFC078]/80 rounded-lg text-[#734739] border border-[#734739] p-1 flex items-center gap-2"
+                >
+                  <div className="w-8 h-8 rounded-full bg-[#FFC078]/70 overflow-hidden flex items-center justify-center border-2 border-[#FFC078]">
+                    <Image
+                      src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/BearishLogo-Byu3rXUZxziBlHv1DUdkCofs2emyI4.webp"
+                      alt="Bearish Avatar"
+                      width={24}
+                      height={24}
+                    />
+                  </div>
+                  <div className="text-xs">
+                    <div className="font-bold">BearishPlayer</div>
+                    <div>Level {playerStats.level}</div>
+                  </div>
+                </Button>
+
                 <a href="/how-to-play" className="no-underline">
                   <Button
                     className="bg-[#FFF6E9] text-[#734739] border-2 border-[#734739] hover:bg-[#E36F6F] hover:text-white"
@@ -293,21 +312,11 @@ export default function GameInterface({ onDisconnect }) {
                   </Button>
                 </a>
                 <Button
-                  onClick={() => setContent("profile")}
-                  className="bg-[#FFC078]/80 rounded-lg text-[#734739] border border-[#734739] p-1 flex items-center gap-2"
+                  onClick={() => setContent("settings")}
+                  className="bg-[#FFF6E9] text-[#734739] border-2 border-[#734739] hover:bg-[#E36F6F] hover:text-white"
+                  size="sm"
                 >
-                  <div className="w-8 h-8 rounded-full bg-[#FFC078]/70 overflow-hidden flex items-center justify-center border-2 border-[#FFC078]">
-                    <Image
-                      src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/BearishLogo-Byu3rXUZxziBlHv1DUdkCofs2emyI4.webp"
-                      alt="Bearish Avatar"
-                      width={24}
-                      height={24}
-                    />
-                  </div>
-                  <div className="text-xs">
-                    <div className="font-bold">BearishPlayer</div>
-                    <div>Level {playerStats.level}</div>
-                  </div>
+                  ⚙️
                 </Button>
               </div>
             </div>
