@@ -1,5 +1,5 @@
 Project Overview
-"Escape to Beartopia" appears to be a resource management and building simulation game with a bear theme. Players manage resources, construct buildings, and develop their bear community.
+"Escape to Beartopia" ia s Idle RPG Realtime Strategy MMO game with a bear theme. Players manage resources, construct buildings, and develop their bear community.
 
 Current Project Structure
 Core Components
