@@ -50,7 +50,7 @@ function Cell({
   hovered = false,
   onPointerOver,
   onPointerOut,
-  isOuterGrid = false,
+  isInCentralArea = true, // Renamed from isOuterGrid to isInCentralArea and inverted logic
 }: {
   position: [number, number, number]
   color: string
@@ -62,7 +62,7 @@ function Cell({
   hovered?: boolean
   onPointerOver?: () => void
   onPointerOut?: () => void
-  isOuterGrid?: boolean
+  isInCentralArea?: boolean
 }) {
   // Convert hex color to Three.js color
   const threeColor = new THREE.Color(color)
@@ -78,8 +78,8 @@ function Cell({
           roughness={0.8}
           emissive={hovered || selected ? threeColor : "#000000"}
           emissiveIntensity={hovered ? 0.3 : selected ? 0.5 : 0}
-          transparent={isOuterGrid}
-          opacity={isOuterGrid ? 0.3 : 1}
+          transparent={!isInCentralArea}
+          opacity={isInCentralArea ? 1 : 0.7} // Make outer cells semi-transparent but still visible
         />
       </mesh>
 
@@ -91,10 +91,10 @@ function Cell({
         </mesh>
       )}
 
-      {/* Icon - only show for inner grid */}
-      {icon && !isOuterGrid && (
+      {/* Icon - show for all cells, but make outer grid icons smaller */}
+      {icon && (
         <Html position={[0, height + 0.2, 0]} center>
-          <div className="text-2xl pointer-events-none">{icon}</div>
+          <div className={`pointer-events-none ${isInCentralArea ? "text-2xl" : "text-xl opacity-80"}`}>{icon}</div>
         </Html>
       )}
     </group>
@@ -195,15 +195,15 @@ function CameraController({
       args={[camera, gl.domElement]}
       enableDamping
       dampingFactor={0.1}
-      rotateSpeed={0.1} // Greatly reduced rotation speed
-      panSpeed={3.0} // Significantly increased for better drag response
-      zoomSpeed={1.5}
+      rotateSpeed={0.3} // Reduced rotation speed to make panning more dominant
+      panSpeed={2.0} // Increased for better drag response
+      zoomSpeed={1.5} // Increased for better zoom
       minDistance={10}
       maxDistance={300}
       maxPolarAngle={Math.PI / 2 - 0.1} // Prevent going below the ground
       minPolarAngle={0.1} // Prevent going directly overhead
-      enableRotate={false} // Disable rotation entirely to focus on panning
-      enablePan={true} // Ensure panning is enabled
+      enableRotate={true} // Allow rotation
+      enablePan={true} // Enable panning
       screenSpacePanning={true} // Use screen space panning for more intuitive controls
     />
   )
@@ -264,25 +264,26 @@ function AllianceMap3D({
 
   return (
     <>
-      {/* Ground plane for the entire 1000x1000 grid */}
-      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[500, -0.1, 500]} receiveShadow>
-        <planeGeometry args={[1000, 1000]} />
+      {/* Ground plane for the entire 2200x2200 grid */}
+      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[1100, -0.1, 1100]} receiveShadow>
+        <planeGeometry args={[2200, 2200]} />
         <meshStandardMaterial color="#8BBF9F" />
       </mesh>
 
-      {/* Grid lines for the main 100x100 area */}
-      <gridHelper args={[100, 100, "#FFFFFF", "#CCCCCC"]} position={[500, 0, 500]} />
+      {/* Grid lines for the main 2000x2000 area */}
+      <gridHelper args={[2000, 2000, "#FFFFFF", "#CCCCCC"]} position={[1100, 0, 1100]} />
 
       {/* Boundary indicator - semi-transparent border around main grid */}
-      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[500, 0.1, 500]}>
-        <ringGeometry args={[50, 52, 32]} />
+      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[1100, 0.1, 1100]}>
+        <ringGeometry args={[1000, 1005, 64]} />
         <meshStandardMaterial color="#FFFFFF" transparent opacity={0.3} />
       </mesh>
 
       {/* Map cells */}
       {mapLocations.map((location) => {
-        // Determine if this cell is in the outer grid
-        const isOuterGrid = location.x < 450 || location.x > 550 || location.y < 450 || location.y > 550
+        // Determine if this cell is in the central area (for visual distinction only)
+        const isInCentralArea = location.x >= 450 && location.x <= 550 && location.y >= 450 && location.y <= 550
+        const isOuterGrid = !isInCentralArea
 
         return (
           <Cell
@@ -292,10 +293,10 @@ function AllianceMap3D({
             icon={typeof location.icon === "string" ? location.icon : undefined}
             selected={selectedLocation?.id === location.id}
             hovered={hoveredLocation?.id === location.id}
-            onClick={() => !isOuterGrid && onSelectLocation(location)}
-            onPointerOver={() => !isOuterGrid && onHoverLocation(location)}
+            onClick={() => onSelectLocation(location)} // All cells are now clickable
+            onPointerOver={() => onHoverLocation(location)} // All cells can be hovered
             onPointerOut={onClearHover}
-            isOuterGrid={isOuterGrid}
+            isInCentralArea={isInCentralArea} // Just for visual distinction
           />
         )
       })}
@@ -348,9 +349,9 @@ export default function AllianceMap({ onReturnToLanding }: AllianceMapProps) {
   const [showControls, setShowControls] = useState(false) // For showing control help
   const canvasRef = useRef<HTMLCanvasElement>(null)
 
-  // Grid configuration - now 1000x1000 with gameplay in center 100x100
-  const totalGridSize = 1000
-  const playableGridSize = 100
+  // Grid configuration - now 2200x2200 with gameplay in center 2000x2000
+  const totalGridSize = 2200
+  const playableGridSize = 2000
   const gridOffset = (totalGridSize - playableGridSize) / 2 // Center the playable grid
 
   // Generate map locations for the entire 1000x1000 grid
@@ -657,268 +658,260 @@ export default function AllianceMap({ onReturnToLanding }: AllianceMapProps) {
   }
 
   return (
-    <div className="relative w-full h-full bg-[#8BBF9F]">
-      <ScrollArea className="h-full w-full overflow-hidden" style={{ position: "relative" }}>
-        {/* 3D Canvas */}
-        <div className="relative" style={{ width: "100%", height: "100%", minWidth: "100%", minHeight: "100%" }}>
-          <Canvas
-            ref={canvasRef}
-            shadows
-            camera={{ position: [498, 15, 510], fov: 50 }} // Start zoomed in on user's den
-            style={{ background: "linear-gradient(to bottom, #87CEEB, #E0F7FA)" }}
-          >
-            <Suspense fallback={null}>
-              <AllianceMap3D
-                mapLocations={mapLocations}
-                selectedLocation={selectedLocation}
-                onSelectLocation={handleLocationSelect}
-                hoveredLocation={hoveredLocation}
-                onHoverLocation={handleLocationHover}
-                onClearHover={clearHover}
-                onZoom={handleCameraZoom}
-                zoomLevel={zoom}
-                forceUpdate={forceUpdate}
-                cameraMode={cameraMode}
-              />
-            </Suspense>
-          </Canvas>
-        </div>
+    <div className="relative w-full h-full overflow-hidden bg-[#8BBF9F]">
+      {/* 3D Canvas */}
+      <Canvas
+        ref={canvasRef}
+        shadows
+        camera={{ position: [498, 15, 510], fov: 50 }} // Start zoomed in on user's den
+        style={{ background: "linear-gradient(to bottom, #87CEEB, #E0F7FA)" }}
+      >
+        <Suspense fallback={null}>
+          <AllianceMap3D
+            mapLocations={mapLocations}
+            selectedLocation={selectedLocation}
+            onSelectLocation={handleLocationSelect}
+            hoveredLocation={hoveredLocation}
+            onHoverLocation={handleLocationHover}
+            onClearHover={clearHover}
+            onZoom={handleCameraZoom}
+            zoomLevel={zoom}
+            forceUpdate={forceUpdate}
+            cameraMode={cameraMode}
+          />
+        </Suspense>
+      </Canvas>
 
-        {/* Horizontal and Vertical Scrollbars */}
-        <ScrollBar orientation="horizontal" className="bg-[#FFC078]/30" />
-        <ScrollBar orientation="vertical" className="bg-[#FFC078]/30" />
-
-        {/* Simplified Map Controls - Just zoom and center */}
-        <div className="absolute top-1/2 right-8 transform -translate-y-1/2 bg-[#FFF6E9]/80 p-3 rounded-lg border-2 border-[#734739] z-50 flex flex-col gap-4">
-          <Button
-            size="lg"
-            variant="outline"
-            onClick={handleZoomIn}
-            className="h-16 w-16 p-0 flex items-center justify-center text-2xl bg-[#74C480] hover:bg-[#74C480]/80 text-white border-2 border-white"
-            title="Zoom in"
-          >
-            <Plus size={32} />
-          </Button>
-          <Button
-            size="lg"
-            variant="outline"
-            onClick={handleZoomOut}
-            className="h-16 w-16 p-0 flex items-center justify-center text-2xl bg-[#E36F6F] hover:bg-[#E36F6F]/80 text-white border-2 border-white"
-            title="Zoom out"
-          >
-            <Minus size={32} />
-          </Button>
-          <Button
-            size="lg"
-            variant="outline"
-            onClick={centerOnPlayerDen}
-            className="h-16 w-16 p-0 flex items-center justify-center text-2xl bg-[#FFC078] hover:bg-[#FFC078]/80 text-[#734739] border-2 border-[#734739]"
-            title="Change camera view"
-          >
-            <RotateCcw size={32} />
-          </Button>
-        </div>
-
-        {/* Map title - simplified */}
-        <div className="absolute top-4 left-4 bg-[#FFF6E9]/80 p-2 rounded-lg border-2 border-[#734739] z-50">
-          <h4 className="font-bold text-[#734739]">Alliance Map</h4>
-        </div>
-
-        {/* Selected location info panel */}
-        {showInfoPanel && selectedLocation && (
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 bg-[#FFF6E9]/95 backdrop-blur-sm border-2 border-[#734739] p-4 rounded-lg z-[100] shadow-xl">
-            <div className="flex justify-between items-center mb-4">
-              <div className="flex items-center gap-2">
-                <div
-                  className="w-10 h-10 rounded-full flex items-center justify-center text-xl"
-                  style={{ backgroundColor: getCellColor(selectedLocation), border: "2px solid #734739" }}
-                >
-                  {getLocationIcon(selectedLocation)}
-                </div>
-                <div>
-                  <h3 className="font-bold text-[#734739]">{selectedLocation.name}</h3>
-                  {selectedLocation.owner && (
-                    <div className="text-xs text-[#734739]">Owned by: {selectedLocation.owner}</div>
-                  )}
-                </div>
-              </div>
-              <button
-                onClick={closeInfoPanel}
-                className="text-[#734739] hover:text-[#E36F6F] p-1 rounded-full hover:bg-[#FFC078]/30"
-              >
-                <X size={18} />
-              </button>
-            </div>
-
-            <p className="text-[#734739] mb-4">{selectedLocation.description}</p>
-
-            {/* Location details based on type */}
-            {selectedLocation.type === "resource" && selectedLocation.resources && (
-              <div className="mb-4 p-2 bg-[#FFC078]/30 rounded-lg">
-                <div className="text-sm text-[#734739] flex justify-between">
-                  <span>Resource: {selectedLocation.resources.type}</span>
-                  <span>Amount: {selectedLocation.resources.amount}</span>
-                </div>
-              </div>
-            )}
-
-            {/* Action buttons based on location type */}
-            <div className="flex gap-2">
-              {selectedLocation.type === "other-alliance" && (
-                <Button
-                  onClick={() => showSendForces("attack")}
-                  className="flex-1 bg-[#E36F6F] hover:bg-[#E36F6F]/80 text-white"
-                  disabled={availableForces.attack <= 0}
-                >
-                  <Axe size={16} className="mr-1" /> Attack
-                </Button>
-              )}
-
-              {selectedLocation.type === "alliance-member" && (
-                <Button
-                  onClick={() => showSendForces("defend")}
-                  className="flex-1 bg-[#74C480] hover:bg-[#74C480]/80 text-white"
-                  disabled={availableForces.defense <= 0}
-                >
-                  <Shield size={16} className="mr-1" /> Defend
-                </Button>
-              )}
-
-              {selectedLocation.type === "resource" && (
-                <Button
-                  onClick={() => showSendForces("gather")}
-                  className="flex-1 bg-[#6FB5FF] hover:bg-[#6FB5FF]/80 text-white"
-                  disabled={availableForces.gathering <= 0}
-                >
-                  <Pickaxe size={16} className="mr-1" /> Gather
-                </Button>
-              )}
-
-              {selectedLocation.type === "quest" && (
-                <Button className="flex-1 bg-[#B080FF] hover:bg-[#B080FF]/80 text-white">Start Quest</Button>
-              )}
-            </div>
-
-            {/* Send forces panel */}
-            {showActionPanel && actionType && (
-              <div className="mt-4 p-2 bg-[#FFF6E9] border border-[#734739] rounded-lg">
-                <h4 className="font-bold text-[#734739] text-sm mb-2">
-                  {actionType === "attack"
-                    ? "Send Attack Forces"
-                    : actionType === "defend"
-                      ? "Send Defense Forces"
-                      : "Send Gathering Forces"}
-                </h4>
-
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-sm text-[#734739]">Available: {availableForces[actionType]}</span>
-                  <div className="flex items-center">
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      onClick={() => setForcesToSend(Math.max(1, forcesToSend - 1))}
-                      disabled={forcesToSend <= 1}
-                      className="h-7 w-7 p-0"
-                    >
-                      -
-                    </Button>
-                    <span className="mx-2 text-sm font-bold">{forcesToSend}</span>
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      onClick={() => setForcesToSend(Math.min(availableForces[actionType], forcesToSend + 1))}
-                      disabled={forcesToSend >= availableForces[actionType]}
-                      className="h-7 w-7 p-0"
-                    >
-                      +
-                    </Button>
-                  </div>
-                </div>
-
-                <Button onClick={handleSendForces} className="w-full bg-[#74C480] hover:bg-[#74C480]/80 text-white">
-                  Send Forces
-                </Button>
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* Available forces - simplified */}
-        <div className="absolute bottom-4 right-4 bg-[#FFF6E9]/80 p-2 rounded-lg border-2 border-[#734739] z-50">
-          <div className="grid grid-cols-3 gap-2">
-            <div className="flex items-center">
-              <Axe size={12} className="mr-1 text-[#E36F6F]" />
-              <span className="font-bold">{availableForces.attack}</span>
-            </div>
-            <div className="flex items-center">
-              <Shield size={12} className="mr-1 text-[#74C480]" />
-              <span className="font-bold">{availableForces.defense}</span>
-            </div>
-            <div className="flex items-center">
-              <Pickaxe size={12} className="mr-1 text-[#6FB5FF]" />
-              <span className="font-bold">{availableForces.gathering}</span>
-            </div>
-          </div>
-        </div>
-
-        {/* Alliance info - simplified */}
-        <div className="absolute bottom-4 left-4 bg-[#FFF6E9]/80 p-2 rounded-lg border-2 border-[#734739] z-50">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-full bg-[#FFC078] flex items-center justify-center border-2 border-[#734739]">
-              <Users size={16} />
-            </div>
-            <div>
-              <h4 className="font-bold text-[#734739] text-sm">Honey Hunters</h4>
-            </div>
-          </div>
-        </div>
-
-        {/* Map controls help */}
-        <div
-          className="absolute top-16 left-4 bg-[#FFF6E9]/80 p-2 rounded-lg border border-[#734739] z-50 cursor-pointer"
-          onClick={toggleControlsHelp}
+      {/* Simplified Map Controls - Just zoom and center */}
+      <div className="absolute top-1/2 right-8 transform -translate-y-1/2 bg-[#FFF6E9]/80 p-3 rounded-lg border-2 border-[#734739] z-50 flex flex-col gap-4">
+        <Button
+          size="lg"
+          variant="outline"
+          onClick={handleZoomIn}
+          className="h-16 w-16 p-0 flex items-center justify-center text-2xl bg-[#74C480] hover:bg-[#74C480]/80 text-white border-2 border-white"
+          title="Zoom in"
         >
-          <div className="text-xs text-[#734739]">Click and drag to move • Use scrollbars to navigate</div>
+          <Plus size={32} />
+        </Button>
+        <Button
+          size="lg"
+          variant="outline"
+          onClick={handleZoomOut}
+          className="h-16 w-16 p-0 flex items-center justify-center text-2xl bg-[#E36F6F] hover:bg-[#E36F6F]/80 text-white border-2 border-white"
+          title="Zoom out"
+        >
+          <Minus size={32} />
+        </Button>
+        <Button
+          size="lg"
+          variant="outline"
+          onClick={centerOnPlayerDen}
+          className="h-16 w-16 p-0 flex items-center justify-center text-2xl bg-[#FFC078] hover:bg-[#FFC078]/80 text-[#734739] border-2 border-[#734739]"
+          title="Change camera view"
+        >
+          <RotateCcw size={32} />
+        </Button>
+      </div>
 
-          {showControls && (
-            <div className="mt-2 text-xs text-[#734739] bg-[#FFF6E9] p-2 rounded">
-              <p className="font-bold mb-1">Map Controls:</p>
-              <ul className="list-disc pl-4 space-y-1">
-                <li>Click and drag to pan around the map</li>
-                <li>Use scrollbars at bottom and right to navigate</li>
-                <li>Use + button to zoom in closer</li>
-                <li>Use - button to zoom out</li>
-                <li>Use ↻ button to center on your den</li>
-                <li>Click on locations to view details</li>
-              </ul>
+      {/* Map title - simplified */}
+      <div className="absolute top-4 left-4 bg-[#FFF6E9]/80 p-2 rounded-lg border-2 border-[#734739] z-50">
+        <h4 className="font-bold text-[#734739]">Alliance Map</h4>
+      </div>
+
+      {/* Selected location info panel */}
+      {showInfoPanel && selectedLocation && (
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 bg-[#FFF6E9]/95 backdrop-blur-sm border-2 border-[#734739] p-4 rounded-lg z-[100] shadow-xl">
+          <div className="flex justify-between items-center mb-4">
+            <div className="flex items-center gap-2">
+              <div
+                className="w-10 h-10 rounded-full flex items-center justify-center text-xl"
+                style={{ backgroundColor: getCellColor(selectedLocation), border: "2px solid #734739" }}
+              >
+                {getLocationIcon(selectedLocation)}
+              </div>
+              <div>
+                <h3 className="font-bold text-[#734739]">{selectedLocation.name}</h3>
+                {selectedLocation.owner && (
+                  <div className="text-xs text-[#734739]">Owned by: {selectedLocation.owner}</div>
+                )}
+              </div>
+            </div>
+            <button
+              onClick={closeInfoPanel}
+              className="text-[#734739] hover:text-[#E36F6F] p-1 rounded-full hover:bg-[#FFC078]/30"
+            >
+              <X size={18} />
+            </button>
+          </div>
+
+          <p className="text-[#734739] mb-4">{selectedLocation.description}</p>
+
+          {/* Location details based on type */}
+          {selectedLocation.type === "resource" && selectedLocation.resources && (
+            <div className="mb-4 p-2 bg-[#FFC078]/30 rounded-lg">
+              <div className="text-sm text-[#734739] flex justify-between">
+                <span>Resource: {selectedLocation.resources.type}</span>
+                <span>Amount: {selectedLocation.resources.amount}</span>
+              </div>
+            </div>
+          )}
+
+          {/* Action buttons based on location type */}
+          <div className="flex gap-2">
+            {selectedLocation.type === "other-alliance" && (
+              <Button
+                onClick={() => showSendForces("attack")}
+                className="flex-1 bg-[#E36F6F] hover:bg-[#E36F6F]/80 text-white"
+                disabled={availableForces.attack <= 0}
+              >
+                <Axe size={16} className="mr-1" /> Attack
+              </Button>
+            )}
+
+            {selectedLocation.type === "alliance-member" && (
+              <Button
+                onClick={() => showSendForces("defend")}
+                className="flex-1 bg-[#74C480] hover:bg-[#74C480]/80 text-white"
+                disabled={availableForces.defense <= 0}
+              >
+                <Shield size={16} className="mr-1" /> Defend
+              </Button>
+            )}
+
+            {selectedLocation.type === "resource" && (
+              <Button
+                onClick={() => showSendForces("gather")}
+                className="flex-1 bg-[#6FB5FF] hover:bg-[#6FB5FF]/80 text-white"
+                disabled={availableForces.gathering <= 0}
+              >
+                <Pickaxe size={16} className="mr-1" /> Gather
+              </Button>
+            )}
+
+            {selectedLocation.type === "quest" && (
+              <Button className="flex-1 bg-[#B080FF] hover:bg-[#B080FF]/80 text-white">Start Quest</Button>
+            )}
+          </div>
+
+          {/* Send forces panel */}
+          {showActionPanel && actionType && (
+            <div className="mt-4 p-2 bg-[#FFF6E9] border border-[#734739] rounded-lg">
+              <h4 className="font-bold text-[#734739] text-sm mb-2">
+                {actionType === "attack"
+                  ? "Send Attack Forces"
+                  : actionType === "defend"
+                    ? "Send Defense Forces"
+                    : "Send Gathering Forces"}
+              </h4>
+
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-sm text-[#734739]">Available: {availableForces[actionType]}</span>
+                <div className="flex items-center">
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => setForcesToSend(Math.max(1, forcesToSend - 1))}
+                    disabled={forcesToSend <= 1}
+                    className="h-7 w-7 p-0"
+                  >
+                    -
+                  </Button>
+                  <span className="mx-2 text-sm font-bold">{forcesToSend}</span>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => setForcesToSend(Math.min(availableForces[actionType], forcesToSend + 1))}
+                    disabled={forcesToSend >= availableForces[actionType]}
+                    className="h-7 w-7 p-0"
+                  >
+                    +
+                  </Button>
+                </div>
+              </div>
+
+              <Button onClick={handleSendForces} className="w-full bg-[#74C480] hover:bg-[#74C480]/80 text-white">
+                Send Forces
+              </Button>
             </div>
           )}
         </div>
+      )}
 
-        {/* Testing: Back to Landing button */}
-        {onReturnToLanding && (
-          <div className="absolute top-4 right-4 bg-[#E36F6F]/90 p-1 rounded-lg border border-[#734739] z-50">
-            <button onClick={onReturnToLanding} className="text-white text-xs hover:text-[#FFF6E9] flex items-center">
-              <span>←</span>
-              <span className="ml-1">Test</span>
-            </button>
+      {/* Available forces - simplified */}
+      <div className="absolute bottom-4 right-4 bg-[#FFF6E9]/80 p-2 rounded-lg border-2 border-[#734739] z-50">
+        <div className="grid grid-cols-3 gap-2">
+          <div className="flex items-center">
+            <Axe size={12} className="mr-1 text-[#E36F6F]" />
+            <span className="font-bold">{availableForces.attack}</span>
           </div>
-        )}
-
-        {/* Loading overlay */}
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-40">
-          <div className="text-[#734739] text-sm">
-            {!canvasRef.current && (
-              <div className="bg-[#FFF6E9]/80 p-4 rounded-lg border-2 border-[#734739]">
-                <div className="flex flex-col items-center">
-                  <div className="w-8 h-8 border-4 border-[#E36F6F] border-t-transparent rounded-full animate-spin mb-2"></div>
-                  <div>Loading 3D map...</div>
-                </div>
-              </div>
-            )}
+          <div className="flex items-center">
+            <Shield size={12} className="mr-1 text-[#74C480]" />
+            <span className="font-bold">{availableForces.defense}</span>
+          </div>
+          <div className="flex items-center">
+            <Pickaxe size={12} className="mr-1 text-[#6FB5FF]" />
+            <span className="font-bold">{availableForces.gathering}</span>
           </div>
         </div>
-      </ScrollArea>
+      </div>
+
+      {/* Alliance info - simplified */}
+      <div className="absolute bottom-4 left-4 bg-[#FFF6E9]/80 p-2 rounded-lg border-2 border-[#734739] z-50">
+        <div className="flex items-center gap-2">
+          <div className="w-8 h-8 rounded-full bg-[#FFC078] flex items-center justify-center border-2 border-[#734739]">
+            <Users size={16} />
+          </div>
+          <div>
+            <h4 className="font-bold text-[#734739] text-sm">Honey Hunters</h4>
+          </div>
+        </div>
+      </div>
+
+      {/* Map controls help */}
+      <div
+        className="absolute top-16 left-4 bg-[#FFF6E9]/80 p-2 rounded-lg border border-[#734739] z-50 cursor-pointer"
+        onClick={toggleControlsHelp}
+      >
+        <div className="text-xs text-[#734739]">Click and drag to move • Use scrollbars to navigate</div>
+
+        {showControls && (
+          <div className="mt-2 text-xs text-[#734739] bg-[#FFF6E9] p-2 rounded">
+            <p className="font-bold mb-1">Map Controls:</p>
+            <ul className="list-disc pl-4 space-y-1">
+              <li>Click and drag to pan around the map</li>
+              <li>Use scrollbars at bottom and right to navigate</li>
+              <li>Use + button to zoom in closer</li>
+              <li>Use - button to zoom out</li>
+              <li>Use ↻ button to center on your den</li>
+              <li>Click on locations to view details</li>
+            </ul>
+          </div>
+        )}
+      </div>
+
+      {/* Testing: Back to Landing button */}
+      {onReturnToLanding && (
+        <div className="absolute top-4 right-4 bg-[#E36F6F]/90 p-1 rounded-lg border border-[#734739] z-50">
+          <button onClick={onReturnToLanding} className="text-white text-xs hover:text-[#FFF6E9] flex items-center">
+            <span>←</span>
+            <span className="ml-1">Test</span>
+          </button>
+        </div>
+      )}
+
+      {/* Loading overlay */}
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-40">
+        <div className="text-[#734739] text-sm">
+          {!canvasRef.current && (
+            <div className="bg-[#FFF6E9]/80 p-4 rounded-lg border-2 border-[#734739]">
+              <div className="flex flex-col items-center">
+                <div className="w-8 h-8 border-4 border-[#E36F6F] border-t-transparent rounded-full animate-spin mb-2"></div>
+                <div>Loading 3D map...</div>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   )
 }
