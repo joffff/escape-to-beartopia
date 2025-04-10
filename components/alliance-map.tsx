@@ -288,15 +288,15 @@ function AllianceMap3D({
         return (
           <Cell
             key={location.id}
-            position={[location.x, 0, location.y]} // x, y in 3D space (y is up in Three.js)
+            position={[location.x + 0.5, 0, location.y + 0.5]} // Add 0.5 offset to position items inside grid squares
             color={getCellColor(location)}
             icon={typeof location.icon === "string" ? location.icon : undefined}
             selected={selectedLocation?.id === location.id}
             hovered={hoveredLocation?.id === location.id}
-            onClick={() => onSelectLocation(location)} // All cells are now clickable
-            onPointerOver={() => onHoverLocation(location)} // All cells can be hovered
+            onClick={() => onSelectLocation(location)}
+            onPointerOver={() => onHoverLocation(location)}
             onPointerOut={onClearHover}
-            isInCentralArea={isInCentralArea} // Just for visual distinction
+            isInCentralArea={isInCentralArea}
           />
         )
       })}
